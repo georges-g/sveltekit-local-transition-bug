@@ -17,4 +17,4 @@ Go to the home page, click on Submit
 You see error messages appearing, they should have a fading transition, but it
 is not working.
 
-Check the bug page (in progress).
+You can check [the bug page](https://github.com/sveltejs/kit/issues/10417).
