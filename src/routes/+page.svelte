@@ -1,2 +1,64 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script>
+    import FormMsg from './FormMsg.svelte';
+    import {MessageStore} from '$lib/forms';
+
+    let messageStore = MessageStore();
+
+    let handleForm = (e) => {
+        e.preventDefault();
+
+        // Imagine processing the form here and sending data to server
+        // Then, you get the response and you want to fill the form with
+        // messages
+
+        messageStore.clear();
+
+        messageStore.addMsg(
+            'error', 'Generic error message 1', 'generic-errors');
+        messageStore.addMsg(
+            'error', 'Generic error message 2', 'generic-errors');
+
+        messageStore.addMsg(
+            'error', 'Name field error message 1', 'field-errors.name');
+        messageStore.addMsg(
+            'error', 'Name field error message 2', 'field-errors.name');
+    }
+</script>
+
+<h1>Form page</h1>
+<p>
+    Link to the <a href="/other-page">other page</a>.
+</p>
+<form on:submit={handleForm}>
+    <div>
+        <label>Name</label>
+        <input name='name' type='text'/>
+        <div class='field-errors'>
+            {#if $messageStore['field-errors.name']}
+                {#each $messageStore['field-errors.name'] as msg}
+                    <FormMsg
+                        messageStore={messageStore}
+                        msgId={msg.id}>
+                    </FormMsg>
+                {/each}
+            {/if}
+        </div>
+    </div>
+    <div>
+        <label>Email</label>
+        <input name='email' type='email'/>
+    </div>
+    <div>
+        <input type='submit'/>
+    </div>
+    <div class='generic-errors'>
+        {#if $messageStore['generic-errors']}
+            {#each $messageStore['generic-errors'] as msg}
+                <FormMsg
+                    messageStore={messageStore}
+                    msgId={msg.id}>
+                </FormMsg>
+            {/each}
+        {/if}
+    </div>
+</form>
