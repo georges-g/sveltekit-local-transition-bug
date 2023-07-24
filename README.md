@@ -18,3 +18,6 @@ Go to the home page, click on Submit
 
 You see error messages appearing, they should have a fading transition, but it
 is not working.
+
+If you set the transition to global, you can see how it slows down navigation by
+clicking on the other page link after the messages appeared.
