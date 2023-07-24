@@ -1,6 +1,8 @@
 <script>
-    import FormMsg from './FormMsg.svelte';
     import {MessageStore} from '$lib/forms';
+    import {fade} from 'svelte/transition';
+
+    let active = true;
 
     let messageStore = MessageStore();
 
@@ -35,11 +37,17 @@
         <input name='name' type='text'/>
         <div class='field-errors'>
             {#if $messageStore['field-errors.name']}
-                {#each $messageStore['field-errors.name'] as msg}
-                    <FormMsg
-                        messageStore={messageStore}
-                        msgId={msg.id}>
-                    </FormMsg>
+                {#each $messageStore['field-errors.name'] as msg (msg.id)}
+                    <div
+                        class='form-message {msg.className}'
+                        transition:fade={{duration: 1000}}
+                    >
+                        {msg.content}
+                        <span
+                            class='close'
+                            on:click={messageStore.deleteMsg(msg.id)}
+                        >✕</span>
+                    </div>
                 {/each}
             {/if}
         </div>
@@ -53,11 +61,17 @@
     </div>
     <div class='generic-errors'>
         {#if $messageStore['generic-errors']}
-            {#each $messageStore['generic-errors'] as msg}
-                <FormMsg
-                    messageStore={messageStore}
-                    msgId={msg.id}>
-                </FormMsg>
+            {#each $messageStore['generic-errors'] as msg (msg.id)}
+                <div
+                    class='form-message {msg.className}'
+                    transition:fade={{duration: 1000}}
+                >
+                    {msg.content}
+                    <span
+                        class='close'
+                        on:click={messageStore.deleteMsg(msg.id)}
+                    >✕</span>
+                </div>
             {/each}
         {/if}
     </div>
